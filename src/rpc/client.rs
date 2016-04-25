@@ -102,7 +102,6 @@ impl<R: Read + Send + 'static, W: Write> Client<R, W> {
         thread::spawn(move || {
             loop {
                 let msg = model::decode(&mut reader).expect("Filed to decode message");
-                debug!("Get message {:?}", msg);
                 match msg {
                     model::RpcMessage::RpcResponse{msgid, result, error} => {
                         let sender = queue.lock().unwrap().remove(&msgid).unwrap();
